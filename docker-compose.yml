@@ -1,0 +1,38 @@
+services:
+  # Service cho Database MySQL
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Nguyenvuong1210$
+      MYSQL_DATABASE: flutter_product
+    ports:
+      - "3307:3306" # Giữ nguyên cổng 3307 bạn đã đổi
+    volumes:
+      - mysql-data:/var/lib/mysql
+    # --- THÊM PHẦN NÀY VÀO ---
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Service cho ứng dụng Spring Boot
+  app:
+    build: .
+    container_name: spring_boot_app
+    restart: on-failure
+    # --- SỬA LẠI depends_on NHƯ SAU ---
+    depends_on:
+      db:
+        condition: service_healthy # Yêu cầu đợi đến khi DB "healthy"
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/flutter_product?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Nguyenvuong1210$
+
+volumes:
+  mysql-data:
