@@ -1,13 +1,15 @@
 package com.example.th3.service;
 
-import com.example.th3.entity.Product;
-import com.example.th3.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.example.th3.entity.Product;
+import com.example.th3.repository.ProductRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class ProductService {
             product.setName(productDetails.getName());
             product.setDesc(productDetails.getDesc());
             product.setPrice(productDetails.getPrice());
+            product.setCategory(productDetails.getCategory());
             return productRepository.save(product);
         }
         throw new RuntimeException("Product not found with id: " + id);
@@ -55,3 +58,5 @@ public class ProductService {
         return productRepository.findByPriceBetween(minPrice, maxPrice);
     }
 }
+
+

@@ -2,6 +2,7 @@
 
 ## Tổng quan
 API quản lý sản phẩm với các chức năng CRUD cơ bản, sử dụng Spring Boot và MySQL.
+Thêm quản lý Loại sản phẩm (Category) với quan hệ 1-nhiều tới Product.
 
 ## Cấu hình Database
 - Database: MySQL
@@ -17,6 +18,7 @@ API quản lý sản phẩm với các chức năng CRUD cơ bản, sử dụng 
 ## Base URL
 ```
 http://localhost:8080/api/products
+http://localhost:8080/api/categories
 ```
 
 ## API Endpoints
@@ -170,6 +172,68 @@ GET /api/products/price-range?minPrice={minPrice}&maxPrice={maxPrice}
 ]
 ```
 
+## Category Endpoints
+
+### 1. Lấy tất cả category
+```
+GET /api/categories
+```
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Điện thoại",
+    "desc": "Các sản phẩm điện thoại",
+    "createdAt": "2024-01-01T10:00:00",
+    "updatedAt": "2024-01-01T10:00:00"
+  }
+]
+```
+
+### 2. Lấy category theo ID
+```
+GET /api/categories/{id}
+```
+
+### 3. Tạo category
+```
+POST /api/categories
+```
+**Request Body:**
+```json
+{
+  "name": "Laptop",
+  "desc": "Các loại laptop"
+}
+```
+
+### 4. Cập nhật category
+```
+PUT /api/categories/{id}
+```
+
+### 5. Xóa category
+```
+DELETE /api/categories/{id}
+```
+
+### 6. Tìm kiếm category theo tên
+```
+GET /api/categories/search?name={name}
+```
+
+## Liên kết Product với Category
+- Khi tạo/cập nhật `Product`, có thể truyền đối tượng `category` với `id` hợp lệ:
+```json
+{
+  "name": "iPhone 15",
+  "price": 999.99,
+  "category": { "id": 1 }
+}
+```
+
 ## Swagger UI
 Truy cập Swagger UI để xem và test API:
 ```
@@ -225,3 +289,5 @@ curl -X PUT http://localhost:8080/api/products/1 \
 ```bash
 curl -X DELETE http://localhost:8080/api/products/1
 ```
+
+
